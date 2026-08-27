@@ -1,83 +1,114 @@
-# idols launcher
+<div align="center">
 
-Launcher **Tauri + React** (moteur de lancement retrac/carter) avec l’interface et la config **idols-link** (backend local, pas de cloud Retrac).
+# 🎮 idols launcher
 
-## idols-link vs Retrac
+### A modern Windows desktop launcher built with Tauri + React.
 
-| | idols launcher | Retrac d’origine |
-|--|----------------|------------------|
-| API | `http://127.0.0.1:3551` (backend idols) | `https://retrac.0xkaede.xyz/` |
-| Deep link | `idols.launcher://auth:…` | `snow://` |
-| PAK Retrac | non (pas de `pakchunkRetrac`) | oui |
-| Anti-cheat | **non** (`-noeac`, pas de `Retrac_EAC.exe`) | oui |
-| CDN 0xkaede | non | oui |
+![Tauri](https://img.shields.io/badge/Tauri-24C8DB?style=for-the-badge&logo=tauri&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
 
-Constantes : `src/config/idols.ts` (Discord, GitHub, port 3551, etc.).
+</div>
 
-## Prérequis (Windows)
+---
 
-1. **Node.js** 18+ (`node`, `npm`)
-2. **Rust** : [https://rustup.rs](https://rustup.rs) puis redémarrer le terminal (`cargo`, `rustc`)
-3. **Visual Studio Build Tools** — charge de travail « Développement Desktop en C++ » (linker MSVC)
-4. **WebView2** — en général déjà installé sur Windows 11
+## ✨ Overview
 
-## Développement (fenêtre de dev)
+**idols launcher** is a Windows desktop application combining a React interface with a lightweight Tauri shell and the idols ecosystem backend.
 
-```powershell
-cd c:\dev\idols-publique\idols-launcher
+The application provides a polished desktop experience with authentication, configurable appearance and game-related launcher workflows.
+
+## 🏗️ Architecture
+
+```text
+┌──────────────────────┐
+│      React UI        │
+│  Pages / Components  │
+└──────────┬───────────┘
+           │
+┌──────────▼───────────┐
+│   State & API layer   │
+│ Zustand · Axios · RTK │
+└──────────┬───────────┘
+           │
+┌──────────▼───────────┐
+│      Tauri shell     │
+│     Windows app      │
+└──────────┬───────────┘
+           │
+┌──────────▼───────────┐
+│    idols backend     │
+└──────────────────────┘
+```
+
+## 🛠️ Stack
+
+- **Tauri** — desktop application shell
+- **React 18** — interface
+- **TypeScript** — application code
+- **Vite** — frontend tooling
+- **Zustand** — state management
+- **TanStack Router / Query** — routing and data fetching
+- **Framer Motion** — UI animation
+- **Axios** — HTTP communication
+
+## 🪟 Windows prerequisites
+
+1. Node.js 18+
+2. Rust + Cargo via rustup
+3. Visual Studio Build Tools with Desktop C++ workload
+4. WebView2
+
+## 🚀 Development
+
+```bash
 npm install
 npm run tauri dev
 ```
 
-## Build exécutable (.exe)
+## 📦 Build
 
-```powershell
-cd c:\dev\idols-publique\idols-launcher
-npm install
-npm run tauri build
-```
+Frontend:
 
-Sortie typique :
-
-- `src-tauri\target\release\idols launcher.exe`
-- Installateur MSI/NSIS dans `src-tauri\target\release\bundle\` (selon config Tauri)
-
-Build **frontend seul** (sans Tauri) :
-
-```powershell
+```bash
 npm run build
 ```
 
-→ dossier `dist\` (utile pour debug Vite, pas pour distribuer l’app desktop).
+Desktop application:
 
-Lance le **backend idols** sur le port configuré (défaut **3551**) avant de jouer en mode passwordless.
-
-## Installateur Windows (Inno Setup)
-
-1. [Inno Setup 6](https://jrsoftware.org/isinfo.php)
-2. Rust + Node (voir prérequis ci-dessus)
-
-```powershell
-cd c:\dev\idols-publique\idols-launcher
-powershell -ExecutionPolicy Bypass -File .\installer\build-installer.ps1
+```bash
+npm run tauri build
 ```
 
-Produit : **`dist\idols launcher Setup-1.0.0.exe`** (version lue depuis `src-tauri\tauri.conf.json`).
+Tauri installers are generated under `src-tauri/target/release/bundle/`.
 
-Options :
-- `-SkipTauriBuild` — ne recompile pas Tauri (utilise déjà `src-tauri\target\release\`)
-- `-SkipInnoCompile` — build Tauri seulement, pas l’Inno
+## ⚙️ Configuration
 
-Alternative sans Inno : après `npm run tauri build`, installateur Tauri dans `src-tauri\target\release\bundle\` (msi/nsis).
+Application configuration lives primarily under `src/config/`.
 
-## Identité app
+Keep credentials, tokens and private endpoints out of version control.
 
-- **Bundle ID** : `hqnata.idols.launcher`
-- **Nom** : idols launcher
-- App **distincte** d’idols-link (ne pas confondre au lancement Windows)
+## 📁 Project structure
 
-## UI idols
+```text
+src/
+├── components/     # UI components
+├── pages/          # Application pages
+├── state/          # Client state
+├── config/         # Application configuration
+└── ...
 
-- `src/components/idols/` — shell, sidebar, particules
-- `src/state/appearance.ts` — blur, particules, langue
-- `src/pages/idols-settings.tsx` — Apparence + Jeu
+src-tauri/          # Tauri / Rust layer
+installer/          # Windows installer tooling
+```
+
+## 📌 Status
+
+This project is actively evolving. APIs, configuration and UI components may change between releases.
+
+<div align="center">
+
+**Built by Limoons.**
+
+</div>
